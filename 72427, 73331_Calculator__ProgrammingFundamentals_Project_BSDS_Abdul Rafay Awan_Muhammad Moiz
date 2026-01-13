@@ -1,0 +1,117 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+const double PI = 3.141592653589793;
+struct Calculator {
+    double numbers[2];
+    double result;
+    int choice;
+};
+void displayMenu();
+void getInputs(Calculator &calc);
+void calculateResult(Calculator &calc);
+void showOutput(Calculator calc);
+double toRadians(double degrees);
+
+int main() {
+    Calculator myCalc;
+
+    cout << "=== SIMPLE CALCULATOR  ===" << endl;
+
+    while (true) {
+        displayMenu();
+        
+        cout << "Enter selection: ";
+        cin >> myCalc.choice; 
+
+        if (myCalc.choice == 0) 
+        {
+            cout << "Exiting..." << endl;
+            break;
+        }
+
+        if (myCalc.choice >= 1 && myCalc.choice <= 9) 
+        {
+            getInputs(myCalc);
+            calculateResult(myCalc);
+            showOutput(myCalc);
+        } else {
+            cout << "Invalid selection. Try again." << endl;
+        }
+    }
+
+    return 0;
+}
+void displayMenu() {
+    cout << "\n-----------------------------" << endl;
+    cout << "1. Add (+)\t\t2. Subtract (-)" << endl;
+    cout << "3. Multiply (*)\t\t4. Divide (/)" << endl;
+    cout << "5. Square (x^2)\t\t6. Sin (Degrees)" << endl;
+    cout << "7. Cos (Degrees)\t8. Tan (Degrees)" << endl;
+    cout << "9. Log (Natural)\t0. EXIT" << endl;
+    cout << "-----------------------------" << endl;
+}
+
+double toRadians(double degrees) {
+    return degrees * (PI / 180.0);
+}
+void getInputs(Calculator &calc) {
+    if (calc.choice >= 5) {
+        cout << "Enter number: ";
+        cin >> calc.numbers[0];
+    } else {
+        cout << "Enter first number: ";
+        cin >> calc.numbers[0];
+        cout << "Enter second number: ";
+        cin >> calc.numbers[1];
+    }
+}
+
+void calculateResult(Calculator &calc) 
+{
+    switch (calc.choice)
+    {
+        case 1: 
+            calc.result = calc.numbers[0] + calc.numbers[1]; 
+            break;
+        case 2: 
+            calc.result = calc.numbers[0] - calc.numbers[1]; 
+            break;
+        case 3: 
+            calc.result = calc.numbers[0] * calc.numbers[1]; 
+            break;
+        case 4: 
+            if(calc.numbers[1] == 0) {
+                cout << "Error: Cannot divide by zero." << endl;
+                calc.result = 0;
+            } else {
+                calc.result = calc.numbers[0] / calc.numbers[1]; 
+            }
+            break;
+        case 5:
+            calc.result = calc.numbers[0] * calc.numbers[0]; 
+            break;
+        case 6:
+            calc.result = sin(toRadians(calc.numbers[0])); 
+            break;
+        case 7:
+            calc.result = cos(toRadians(calc.numbers[0])); 
+            break;
+        case 8:
+            calc.result = tan(toRadians(calc.numbers[0])); 
+            break;
+        case 9:
+            if(calc.numbers[0] <= 0) {
+                cout << "Error: Log requires positive number." << endl;
+                calc.result = 0;
+            } else {
+                calc.result = log(calc.numbers[0]);
+            }
+            break;
+    }
+}
+
+void showOutput(Calculator calc) {
+    cout << ">>> RESULT: " << calc.result << " <<<" << endl;
+}
